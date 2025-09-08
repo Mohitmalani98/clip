@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -6,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Home() {
@@ -21,8 +19,8 @@ export default function Home() {
 
     const res = await fetch('/api/authenticate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ username, password }),
     });
 
     const data = await res.json();
@@ -67,14 +65,7 @@ export default function Home() {
             </form>
           </CardContent>
         </Card>
-        <div className="text-center text-sm">
-          <Link href="/admin" className="text-muted-foreground hover:text-primary transition-colors">
-            Admin Login
-          </Link>
-        </div>
       </div>
     </div>
   );
 }
-
-    
