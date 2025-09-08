@@ -18,12 +18,12 @@ export async function POST(req: NextRequest) {
             if (contentType?.includes('application/x-www-form-urlencoded')) {
                 const body = await req.text();
                 const params = new URLSearchParams(body);
-                username = params.get('username');
-                password = params.get('password');
+                username = params.get('username')?.trim();
+                password = params.get('password')?.trim();
             } else { // Default to JSON
                 const body = await req.json();
-                username = body.username;
-                password = body.password;
+                username = body.username?.trim();
+                password = body.password?.trim();
             }
 
             if (!username || !password) {
@@ -33,14 +33,21 @@ export async function POST(req: NextRequest) {
             const sb = await getSupabase();
             const { data, error } = await sb.from(TABLE_USERS).select('*').eq('users', username).limit(1).maybeSingle();
             
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase query error:', error.message);
+                throw error;
+            }
 
             if (!data || data.pass !== password) {
                 return NextResponse.json({ status: 'error', code: 'INVALID_CREDENTIALS', message: 'Invalid credentials or expired subscription' }, { status: 401 });
             }
 
+            // Explicitly check if expires_at is null/undefined OR if it's a past date
+            if (!data.expires_at) {
+                 return NextResponse.json({ status: 'error', code: 'EXPIRED', message: 'Invalid credentials or expired subscription' }, { status: 401 });
+            }
             const expiresAt = new Date(data.expires_at);
-            if (!data.expires_at || expiresAt < new Date()) {
+            if (expiresAt < new Date()) {
                 return NextResponse.json({ status: 'error', code: 'EXPIRED', message: 'Invalid credentials or expired subscription' }, { status: 401 });
             }
 
@@ -70,6 +77,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ status: 'error', message: `Not Found: ${path}` }, { status: 404 });
     } catch (e: any) {
+        console.error(`API Error in ${path}:`, e.message);
         return NextResponse.json({ status: 'error', message: e?.message || 'Server error' }, { status: 500 });
     }
 }
