@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trash2, Eye, EyeOff, Edit } from "lucide-react";
+import { Trash2, Eye, EyeOff, Edit, RefreshCw } from "lucide-react";
 
 interface User {
   users: string;
@@ -251,7 +251,12 @@ export default function AdminPage() {
     <>
       <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
         <header className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-primary">NyX Admin Panel</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-bold text-primary">NyX Admin Panel</h1>
+            <Button onClick={() => token && fetchData(token)} variant="outline" size="icon" title="Refresh Data">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </div>
           <Button onClick={handleLogout} variant="outline">Logout</Button>
         </header>
         
@@ -428,3 +433,5 @@ export default function AdminPage() {
     </>
   );
 }
+
+    
