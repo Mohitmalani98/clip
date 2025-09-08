@@ -16,9 +16,10 @@ export async function POST(req: NextRequest) {
             const contentType = req.headers.get('content-type');
 
             if (contentType?.includes('application/x-www-form-urlencoded')) {
-                const formData = await req.formData();
-                username = formData.get('username') as string;
-                password = formData.get('password') as string;
+                const body = await req.text();
+                const params = new URLSearchParams(body);
+                username = params.get('username');
+                password = params.get('password');
             } else { // Default to JSON
                 const body = await req.json();
                 username = body.username;
