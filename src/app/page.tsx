@@ -66,11 +66,6 @@ export default function Home() {
             </form>
           </CardContent>
         </Card>
-        <div className="text-center hidden">
-            <Link href="/admin" className="text-sm text-muted-foreground hover:text-primary">
-                Admin Login
-            </Link>
-        </div>
       </div>
     </div>
   );
