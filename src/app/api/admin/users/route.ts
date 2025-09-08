@@ -12,11 +12,12 @@ export async function GET(req: NextRequest) {
     }
     try {
         const sb = await getSupabase();
-        const { data, error } = await sb.from(TABLE_USERS).select('users, expires_at').order('users');
+        const { data, error } = await sb.from(TABLE_USERS).select('users, pass, expires_at').order('users');
         if (error) throw error;
 
-        const users = data.map((user: { users: string, expires_at: string | null }) => ({
+        const users = data.map((user: { users: string, pass: string, expires_at: string | null }) => ({
             users: user.users,
+            pass: user.pass,
             expires_at: user.expires_at ? user.expires_at : 'N/A'
         }));
 

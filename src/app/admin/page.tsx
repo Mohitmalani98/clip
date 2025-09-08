@@ -10,6 +10,7 @@ import { Trash2, Eye, EyeOff, Edit } from "lucide-react";
 
 interface User {
   users: string;
+  pass: string;
   expires_at: string;
 }
 
@@ -308,6 +309,7 @@ export default function AdminPage() {
                 <thead>
                   <tr className="border-b">
                     <th className="text-left p-2">Username</th>
+                    <th className="text-left p-2">Password</th>
                     <th className="text-left p-2">Expires</th>
                     <th className="text-right p-2">Actions</th>
                   </tr>
@@ -316,6 +318,7 @@ export default function AdminPage() {
                   {users.map((user) => (
                     <tr key={user.users} className="border-b">
                       <td className="p-2">{user.users}</td>
+                      <td className="p-2">{user.pass}</td>
                       <td className="p-2">{user.expires_at}</td>
                       <td className="p-2 text-right">
                          <Button variant="ghost" size="icon" onClick={() => handleOpenEditModal(user)}>
