@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,11 @@ export default function Home() {
             </form>
           </CardContent>
         </Card>
+        <div className="text-center hidden">
+            <Link href="/admin" className="text-sm text-muted-foreground hover:text-primary">
+                Admin Login
+            </Link>
+        </div>
       </div>
     </div>
   );
