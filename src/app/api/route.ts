@@ -12,19 +12,10 @@ export async function POST(req: NextRequest) {
 
     try {
         if (path === '/authenticate') {
-            let username, password;
-            const contentType = req.headers.get('content-type');
-
-            if (contentType?.includes('application/x-www-form-urlencoded')) {
-                const body = await req.text();
-                const params = new URLSearchParams(body);
-                username = params.get('username')?.trim();
-                password = params.get('password')?.trim();
-            } else { // Default to JSON
-                const body = await req.json();
-                username = body.username?.trim();
-                password = body.password?.trim();
-            }
+            const body = await req.text();
+            const params = new URLSearchParams(body);
+            const username = params.get('username')?.trim();
+            const password = params.get('password')?.trim();
 
             if (!username || !password) {
                  return NextResponse.json({ status: 'error', code: 'INVALID_CREDENTIALS', message: 'Username and password are required' }, { status: 400 });
